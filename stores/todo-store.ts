@@ -10,7 +10,8 @@ export type ToDoItem = {
   completed: boolean;
   createdAt?: Date;
   updatedAt?: Date;
-  dueDate?: Date;
+  dueDate: Date;
+  isOverdue: boolean;
 };
 
 export type ToDoSettings = {
@@ -40,6 +41,7 @@ export type ToDoActions = {
     completed: number;
     notCompleted: number;
   };
+  setTodos: (todos: ToDoItem[]) => void;
 };
 
 export type ToDoStore = ToDoActions & ToDoState;
@@ -67,9 +69,14 @@ export const createToDoStore = (initState: ToDoState = defaultInitState) => {
             },
             completed: false,
             createdAt: new Date(),
+            dueDate: new Date(),
+            isOverdue: false,
           };
           set((state) => ({ todos: [...state.todos, newTodo] }));
           return newTodo.id;
+        },
+        setTodos: (todos: ToDoItem[]) => {
+          set({ todos });
         },
         removeTodo: (id: number) => {
           set((state) => ({
@@ -94,6 +101,8 @@ export const createToDoStore = (initState: ToDoState = defaultInitState) => {
                     },
                     dueDate: dueDate || todo.dueDate,
                     updatedAt: updatedAt,
+                    isOverdue:
+                      !todo.completed && new Date() > (dueDate || todo.dueDate),
                   }
                 : todo
             ),
@@ -111,7 +120,9 @@ export const createToDoStore = (initState: ToDoState = defaultInitState) => {
         setDueDate: (id: number, dueDate: Date) =>
           set((state) => ({
             todos: state.todos.map((todo) =>
-              todo.id === id ? { ...todo, dueDate } : todo
+              todo.id === id
+                ? { ...todo, dueDate, isOverdue: new Date() > dueDate }
+                : todo
             ),
           })),
         getStatistics: () => {

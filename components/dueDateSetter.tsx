@@ -20,8 +20,8 @@ type DueDateSetterProps = {
 }
 
 export const DueDateSetter: React.FC<DueDateSetterProps> = ({ dueDate, setnewDueDateState, }) => {
-    const [date, setDate] = useState<Date | undefined>(dueDate ? dueDate : new Date())
-
+    const [date, setDate] = useState<Date>(dueDate ? dueDate : new Date())
+    // TODO if I reload the page the Overdue functionality doesn't work: If I change the state of completed I'll stop working until I'll not change the date again.
     return (
         <Popover>
             <PopoverTrigger asChild>

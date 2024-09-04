@@ -25,12 +25,12 @@ export const FilterSelector = () => {
     }]
 
     return (
-        <>
+        <div className='flex gap-2'>
             {filters.map((filter) => (
                 <button key={filter.value} onClick={() => updateSettings({ filter: filter.value as ToDoSettings["filter"] })}>
                     {filter.label} ({filter.amount})
                 </button>
             ))}
-        </>
+        </div>
     )
 }

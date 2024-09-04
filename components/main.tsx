@@ -13,7 +13,7 @@ export const Main = () => {
     const fiteredTodos = settings.filter === "all" ? todos : groupedTodos[settings.filter] || [];
 
     return (
-        <div className='flex flex-col gap-4'>
+        <div className='flex flex-col gap-4 items-center'>
             <NewTodo />
             <FilterSelector />
             <ToDoList todos={fiteredTodos} />
@@ -29,8 +29,9 @@ const NewTodo = () => {
             content: ""
         }, completed: false,
         createdAt: undefined,
-        dueDate: undefined,
+        dueDate: new Date(),
         updatedAt: undefined,
+        isOverdue: false
     }
     return (
         <div className="">
