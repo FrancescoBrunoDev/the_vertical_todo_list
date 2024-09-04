@@ -19,6 +19,7 @@ export const TodoItem: React.FC<ToDoItem> = ({ id, text, completed, createdAt, d
     const [newTodoTitle, setNewTodoTitle] = useState<string>(text ? text.title : "");
     const [newTodoContent, setNewTodoContent] = useState<string>(text ? text.content : "");
     const [newDueDate, setnewDueDateState] = useState<Date>(dueDate ? dueDate : new Date());
+    const [isMounted, setIsMounted] = useState<boolean>(false);
 
     const handleSumit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -52,7 +53,13 @@ export const TodoItem: React.FC<ToDoItem> = ({ id, text, completed, createdAt, d
     }
 
     useEffect(() => {
-        handleUpdate();
+        setIsMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (isMounted) {
+            handleUpdate();
+        }
     }, [newTodoTitle, newTodoContent, newDueDate]);
 
     return (
