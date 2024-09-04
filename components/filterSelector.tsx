@@ -1,21 +1,27 @@
+import { useState, useEffect } from 'react';
 import { ToDoSettings } from "@/stores/todo-store";
 import { useToDoStore } from "@/provider/todo-store-provider";
 
 export const FilterSelector = () => {
-    const { updateSettings, getStatistics } = useToDoStore((state) => state);
+    const { updateSettings, getStatistics, todos } = useToDoStore((state) => state);
+    const [statistics, setStatistics] = useState({ total: 0, completed: 0, notCompleted: 0 });
+
+    useEffect(() => {
+        setStatistics(getStatistics());
+    }, [todos]);
 
     const filters = [{
         label: "All",
         value: "all",
-        amount: getStatistics().total,
+        amount: statistics.total,
     }, {
         label: "Completed",
         value: "completed",
-        amount: getStatistics().completed,
+        amount: statistics.completed,
     }, {
         label: "Not Completed",
         value: "notCompleted",
-        amount: getStatistics().notCompleted,
+        amount: statistics.notCompleted,
     }]
 
     return (
