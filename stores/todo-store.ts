@@ -2,19 +2,19 @@ import { createStore } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 export type ToDoItem = {
-  id: number;
+  id?: number;
   text: {
     title: string;
     content: string;
   };
   completed: boolean;
-  createdAt: Date;
+  createdAt?: Date;
   updatedAt?: Date;
   dueDate?: Date;
 };
 
 export type ToDoSettings = {
-  filters: "all" | "notCompleted" | "completed";
+  filter: "all" | "notCompleted" | "completed";
 };
 
 export type ToDoState = {
@@ -25,7 +25,13 @@ export type ToDoState = {
 export type ToDoActions = {
   addTodo: (title: string, content: string) => void;
   removeTodo: (id: number) => void;
-  updateTodo: (id: number, title: string, content: string) => void;
+  updateTodo: (
+    id: number,
+    title?: string,
+    content?: string,
+    dueDate?: Date,
+    updatedAt?: Date
+  ) => void;
   toggleTodo: (id: number) => void;
   updateSettings: (settings: ToDoSettings) => void;
   setDueDate: (id: number, dueDate: Date) => void;
@@ -39,12 +45,12 @@ export type ToDoActions = {
 export type ToDoStore = ToDoActions & ToDoState;
 
 export const initToDoStore = (): ToDoState => {
-  return { todos: [], settings: { filters: "all" } };
+  return { todos: [], settings: { filter: "all" } };
 };
 
 export const defaultInitState: ToDoState = {
   todos: [],
-  settings: { filters: "all" },
+  settings: { filter: "all" },
 };
 
 export const createToDoStore = (initState: ToDoState = defaultInitState) => {
@@ -63,17 +69,33 @@ export const createToDoStore = (initState: ToDoState = defaultInitState) => {
             createdAt: new Date(),
           };
           set((state) => ({ todos: [...state.todos, newTodo] }));
-          return newTodo;
+          return newTodo.id;
         },
         removeTodo: (id: number) => {
           set((state) => ({
             todos: state.todos.filter((todo) => todo.id !== id),
           }));
         },
-        updateTodo: (id: number, title: string, content: string) =>
+        updateTodo: (
+          id: number,
+          title?: string,
+          content?: string,
+          dueDate?: Date,
+          updatedAt?: Date
+        ) =>
           set((state) => ({
             todos: state.todos.map((todo) =>
-              todo.id === id ? { ...todo, text: { title, content } } : todo
+              todo.id === id
+                ? {
+                    ...todo,
+                    text: {
+                      title: title || todo.text.title,
+                      content: content || todo.text.content,
+                    },
+                    dueDate: dueDate || todo.dueDate,
+                    updatedAt: updatedAt,
+                  }
+                : todo
             ),
           })),
         toggleTodo: (id: number) =>

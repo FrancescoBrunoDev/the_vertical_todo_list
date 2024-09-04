@@ -19,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ToDoStoreProvider>{children}</ToDoStoreProvider>
+        <main className='flex justify-center'>
+          <ToDoStoreProvider>{children}</ToDoStoreProvider>
+        </main>
       </body>
     </html>
   )
