@@ -24,15 +24,13 @@ export const DueDateSetter: React.FC<DueDateSetterProps> = ({
   setnewDueDateState,
 }) => {
   const [date, setDate] = useState<Date>(dueDate ? dueDate : new Date());
-  // TODO if I reload the page the Overdue functionality doesn't work: If I change the state of completed I'll stop working until I'll not change the date again.
-  // TODO Improve the UI colors
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
           className={cn(
-            "w-full justify-start text-left font-normal",
+            "hover w-full justify-start border-none bg-black text-left font-normal text-background hover:bg-black/80",
             !date && "text-muted-foreground",
           )}
         >
@@ -45,10 +43,8 @@ export const DueDateSetter: React.FC<DueDateSetterProps> = ({
           classNames={{
             day: cn(
               buttonVariants({ variant: "ghost" }),
-              "h-8 w-8 p-0 font-normal aria-selected:opacity-100 aria-selected:text-white aria-selected:rounded",
+              "h-8 w-8 p-0 font-normal aria-selected:opacity-100 aria-selected:text-white aria-selected:rounded hover:bg-primary hover:text-black",
             ),
-            day_selected:
-              "bg-primary text-primary-foreground hover:bg-primary hover:text-primary focus:bg-primary focus:text-primary rounded",
             day_today: "bg-primary/50 text-background",
           }}
           mode="single"

@@ -4,7 +4,6 @@ import { useToDoStore } from "@/provider/todo-store-provider";
 import { TodoItem } from "@/components/todoItem";
 import { ToDoList } from "@/components/todoList";
 import { FilterSelector } from "@/components/filterSelector";
-import { Header } from "@/components/header";
 
 export const Main = () => {
   const { todos, settings } = useToDoStore((state) => state);
@@ -16,13 +15,12 @@ export const Main = () => {
     settings.filter === "all" ? todos : groupedTodos[settings.filter] || [];
 
   return (
-    <div className="container flex w-full flex-col items-center gap-4">
-      <div className="sticky top-0 z-50 bg-background">
-        <Header />
+    <div className="container mt-[17rem] flex w-full flex-col items-center gap-36">
+      <div className="fixed bottom-2 z-50 md:bottom-auto md:top-48">
         <FilterSelector />
       </div>
-      <div className="flex w-full flex-col items-center justify-center gap-4">
-        <div className="z-20">
+      <div className="flex w-full flex-col items-center justify-center gap-8">
+        <div className="z-20 border-b-2">
           <NewTodo />
         </div>
         <ToDoList todos={fiteredTodos} />

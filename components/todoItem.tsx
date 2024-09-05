@@ -3,7 +3,6 @@ import { useToDoStore } from "@/provider/todo-store-provider";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -14,6 +13,8 @@ import { ToDoItem } from "@/stores/todo-store";
 import { Textarea } from "@/components/ui/textarea";
 import { PPR } from "@/app/fonts";
 import { Label } from "@/components/ui/label";
+import { Info, GripHorizontal, Plus } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const TodoItem: React.FC<ToDoItem> = ({
   id,
@@ -24,7 +25,10 @@ export const TodoItem: React.FC<ToDoItem> = ({
   updatedAt,
   isOverdue,
 }) => {
-  const { addTodo, setDueDate, updateTodo } = useToDoStore((state) => state);
+  const { addTodo, setDueDate, updateTodo, setIsOverdue } = useToDoStore(
+    (state) => state,
+  );
+
   const [newTodoTitle, setNewTodoTitle] = useState<string>(
     text ? text.title : "",
   );
@@ -59,6 +63,7 @@ export const TodoItem: React.FC<ToDoItem> = ({
     if (!id) return;
     const updatedAt = new Date();
     updateTodo(id, newTodoTitle, newTodoContent, newDueDate, updatedAt);
+    setIsOverdue(id);
   };
 
   const dateLastChange = (updatedAt?: Date, createdAt?: Date) => {
@@ -78,63 +83,85 @@ export const TodoItem: React.FC<ToDoItem> = ({
   }, [newTodoTitle, newTodoContent, newDueDate, completed]);
 
   return (
-    <Card
-      className={`relative max-w-80 border-2 border-transparent bg-primary transition-transform hover:scale-105 ${isOverdue && "border-secondary bg-secondary"} ${completed && "border-green-500 bg-green-500"}`}
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.2 }}
     >
-      {isOverdue && (
-        <span className="absolute left-0 right-0 top-0 rounded-t-lg text-center text-sm font-semibold text-background">
-          Overdue
-        </span>
-      )}
-      <div className={`${isOverdue && "mt-6"} rounded-xl bg-background/90`}>
-        <CardHeader className="space-y-0 p-3">
-          <CardDescription className="text-text/80 text-xs">
-            {dateLastChange(updatedAt, createdAt)}
-          </CardDescription>
-          <CardTitle>
-            <Textarea
-              ref={textareaRef}
-              className={`${PPR.className} focus-visible:ring-none min-h-0 w-full max-w-full resize-none border-none p-0 text-xl font-bold tracking-wider shadow-none focus:outline-none focus:ring-0`}
-              placeholder="Todo Title"
-              value={newTodoTitle}
-              onChange={(e) => setNewTodoTitle(e.target.value)}
-            />
-          </CardTitle>
-        </CardHeader>
-        {!completed && (
-          <>
-            <CardContent className="p-3">
+      <Card
+        className={`relative w-52 border-none bg-primary shadow-md transition-all hover:scale-105 ${id && "group hover:pt-5"} hover:drop-shadow-xl md:w-72`}
+      >
+        {id && (
+          <div className="absolute left-0 right-0 top-0 w-full opacity-0 transition-opacity group-hover:opacity-100 md:items-center">
+            <GripHorizontal className="h-6 w-full" />
+          </div>
+        )}
+
+        <div
+          className={`${isOverdue && "bg-secondary"} ${completed && "bg-primary"} rounded-xl bg-card`}
+        >
+          <CardHeader className="space-y-0 p-3">
+            <CardTitle>
               <Textarea
                 ref={textareaRef}
-                className="focus-visible:ring-none min-h-0 w-full max-w-full resize-none border-none p-0 text-sm font-normal shadow-none focus:outline-none focus:ring-0"
-                placeholder="write your todo"
-                value={newTodoContent}
-                onChange={(e) => setNewTodoContent(e.target.value)}
+                className={`${PPR.className} focus-visible:ring-none min-h-0 w-full max-w-full resize-none border-none p-0 text-xl font-bold tracking-wider shadow-none focus:outline-none focus:ring-0`}
+                placeholder="Todo Title"
+                value={newTodoTitle}
+                onChange={(e) => setNewTodoTitle(e.target.value)}
               />
-            </CardContent>
-            <CardFooter className="flex flex-col gap-2 p-3">
-              <div className="w-full">
-                <Label className="text-text/80 text-xs">Due Date</Label>
-                <DueDateSetter
-                  dueDate={newDueDate}
-                  setnewDueDateState={setnewDueDateState}
+            </CardTitle>
+          </CardHeader>
+          {!completed && (
+            <>
+              <CardContent className="p-3">
+                <Textarea
+                  ref={textareaRef}
+                  className="focus-visible:ring-none min-h-0 w-full max-w-full resize-none border-none p-0 text-sm font-normal shadow-none focus:outline-none focus:ring-0"
+                  placeholder="write your todo"
+                  value={newTodoContent}
+                  onChange={(e) => setNewTodoContent(e.target.value)}
                 />
-              </div>
-              {!id && (
-                <div className="bg- flex justify-end gap-2">
-                  <Button
-                    className="text-background"
-                    type="submit"
-                    onClick={handleNewTodo}
-                  >
-                    add the todo
-                  </Button>
+              </CardContent>
+              <CardFooter className="flex flex-col gap-2 p-3">
+                <div className="w-full">
+                  <Label className="text-text/80 text-xs">Due Date</Label>
+                  <DueDateSetter
+                    dueDate={newDueDate}
+                    setnewDueDateState={setnewDueDateState}
+                  />
                 </div>
-              )}
-            </CardFooter>
-          </>
-        )}
-      </div>
-    </Card>
+                {!id && (
+                  <motion.div
+                    whileTap={{ scale: 0.9 }}
+                    whileHover={{
+                      scale: 1.1,
+                      rotate: [5, 0],
+                    }}
+                  >
+                    <Button
+                      disabled={!newTodoTitle.trim() || !newTodoContent.trim()}
+                      className="text-background"
+                      type="submit"
+                      onClick={handleNewTodo}
+                    >
+                      <Plus />
+                    </Button>
+                  </motion.div>
+                )}
+                {id && (
+                  <div className="justify-centerpt-2 flex items-center gap-1">
+                    <Info className="h-3 w-fit" />
+                    <span className="text-[0.7rem]">
+                      {dateLastChange(updatedAt, createdAt)}
+                    </span>
+                  </div>
+                )}
+              </CardFooter>
+            </>
+          )}
+        </div>
+      </Card>
+    </motion.div>
   );
 };

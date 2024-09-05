@@ -19,7 +19,7 @@ export const FilterSelector = () => {
 
   const filters = [
     {
-      label: "Not completed",
+      label: "Underway",
       value: "notCompleted",
       amount: statistics.notCompleted,
     },
@@ -36,10 +36,10 @@ export const FilterSelector = () => {
   ];
 
   return (
-    <div className="flex gap-2 rounded-xl bg-primary/30 p-2 shadow-lg">
+    <div className="flex gap-2 rounded-xl bg-primary p-2 shadow-lg transition-transform hover:scale-105">
       {filters.map((filter) => (
         <Button
-          className={`${filter.value === settings.filter ? "bg-primary" : "bg-trasparent shadow-none"} text-background`}
+          className={`bg-background/50 text-black/70 transition-all hover:scale-105 hover:bg-background ${filter.value === settings.filter ? "bg-background text-black/90" : "shadow-none"}`}
           key={filter.value}
           onClick={() =>
             updateSettings({ filter: filter.value as ToDoSettings["filter"] })

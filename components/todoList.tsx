@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { TodoItem } from "@/components/todoItem";
 import type { ToDoItem } from "@/stores/todo-store";
 import {
@@ -7,13 +6,17 @@ import {
   Draggable,
 } from "react-beautiful-dnd-next";
 import { useToDoStore } from "@/provider/todo-store-provider";
+import confetti from "canvas-confetti";
+import { ActionDraggableAreas } from "@/components/actionDraggableAreas";
 
 type ToDoListProps = {
   todos: ToDoItem[];
 };
 
 export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
-  const { setTodos, removeTodo, toggleTodo } = useToDoStore((state) => state);
+  const { setTodos, removeTodo, toggleTodo, setIsOverdue } = useToDoStore(
+    (state) => state,
+  );
 
   const handleOnDragEnd = (result: any) => {
     if (!result.destination) return;
@@ -34,46 +37,37 @@ export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
     if (destinationId === "delete") {
       removeTodo(result.draggableId);
     } else if (destinationId === "completed") {
+      const end = Date.now() + 1 * 300; // 3 seconds
+      const colors = ["#a786ff", "#fd8bbc", "#eca184", "#f8deb1"];
+
+      const frame = () => {
+        if (Date.now() > end) return;
+
+        confetti({
+          particleCount: 2,
+          angle: 120,
+          spread: 55,
+          startVelocity: 60,
+          origin: { x: 1, y: 0.5 },
+          colors: colors,
+        });
+
+        requestAnimationFrame(frame);
+      };
+
       toggleTodo(result.draggableId);
+      setIsOverdue(result.draggableId);
+      const completeState = todos.find(
+        (todo) => todo.id === result.draggableId,
+      )?.completed;
+
+      if (!completeState) frame();
     }
   };
 
-  // TODO it works only on the top section of the draggable area.
-
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
-      <div className="fixed inset-0 flex items-center justify-center">
-        <div className="container relative h-full">
-          <Droppable droppableId="delete">
-            {(provided: any) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                className="absolute bottom-1/4 left-2 top-1/4 flex w-2/12 rotate-180 items-center justify-center rounded-xl border-2 border-dashed border-secondary bg-secondary/10 text-secondary lg:bottom-2 lg:top-1/4 lg:w-1/3"
-                style={{
-                  writingMode: "vertical-rl",
-                }}
-              >
-                drag here to delete
-              </div>
-            )}
-          </Droppable>
-          <Droppable droppableId="completed">
-            {(provided: any) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                className="absolute bottom-1/4 right-2 top-1/4 flex w-2/12 items-center justify-center rounded-xl border-2 border-dashed border-primary bg-primary/10 text-primary lg:bottom-2 lg:top-1/4 lg:w-1/3"
-                style={{
-                  writingMode: "vertical-rl",
-                }}
-              >
-                complete
-              </div>
-            )}
-          </Droppable>
-        </div>
-      </div>
+      <ActionDraggableAreas />
       <Droppable droppableId="todos">
         {(provided: any) => (
           <ul
