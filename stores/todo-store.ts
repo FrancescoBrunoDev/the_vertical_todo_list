@@ -31,7 +31,7 @@ export type ToDoActions = {
     title?: string,
     content?: string,
     dueDate?: Date,
-    updatedAt?: Date
+    updatedAt?: Date,
   ) => void;
   toggleTodo: (id: number) => void;
   updateSettings: (settings: ToDoSettings) => void;
@@ -47,7 +47,7 @@ export type ToDoActions = {
 export type ToDoStore = ToDoActions & ToDoState;
 
 export const initToDoStore = (): ToDoState => {
-  return { todos: [], settings: { filter: "all" } };
+  return { todos: [], settings: { filter: "notCompleted" } };
 };
 
 export const defaultInitState: ToDoState = {
@@ -88,7 +88,7 @@ export const createToDoStore = (initState: ToDoState = defaultInitState) => {
           title?: string,
           content?: string,
           dueDate?: Date,
-          updatedAt?: Date
+          updatedAt?: Date,
         ) =>
           set((state) => ({
             todos: state.todos.map((todo) =>
@@ -101,16 +101,23 @@ export const createToDoStore = (initState: ToDoState = defaultInitState) => {
                     },
                     dueDate: dueDate || todo.dueDate,
                     updatedAt: updatedAt,
-                    isOverdue:
-                      !todo.completed && new Date() > (dueDate || todo.dueDate),
+                    isOverdue: !todo.completed
+                      ? new Date() > (dueDate || todo.dueDate)
+                      : false,
                   }
-                : todo
+                : todo,
             ),
           })),
         toggleTodo: (id: number) =>
           set((state) => ({
             todos: state.todos.map((todo) =>
-              todo.id === id ? { ...todo, completed: !todo.completed } : todo
+              todo.id === id
+                ? {
+                    ...todo,
+                    completed: !todo.completed,
+                    isOverdue: new Date() > (todo.dueDate || new Date()),
+                  }
+                : todo,
             ),
           })),
         updateSettings: (settings: ToDoSettings) =>
@@ -122,7 +129,7 @@ export const createToDoStore = (initState: ToDoState = defaultInitState) => {
             todos: state.todos.map((todo) =>
               todo.id === id
                 ? { ...todo, dueDate, isOverdue: new Date() > dueDate }
-                : todo
+                : todo,
             ),
           })),
         getStatistics: () => {
@@ -137,7 +144,7 @@ export const createToDoStore = (initState: ToDoState = defaultInitState) => {
       {
         name: "todo-store",
         storage: createJSONStorage(() => localStorage),
-      }
-    )
+      },
+    ),
   );
 };

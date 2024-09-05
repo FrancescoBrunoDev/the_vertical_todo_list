@@ -49,7 +49,7 @@ export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                className="absolute bottom-1/4 left-2 top-1/4 flex w-2/12 rotate-180 items-center justify-center rounded-xl border-2 border-dashed border-secondary bg-secondary/10 text-secondary md:bottom-2 md:top-1/4 md:w-1/3"
+                className="absolute bottom-1/4 left-2 top-1/4 flex w-2/12 rotate-180 items-center justify-center rounded-xl border-2 border-dashed border-secondary bg-secondary/10 text-secondary lg:bottom-2 lg:top-1/4 lg:w-1/3"
                 style={{
                   writingMode: "vertical-rl",
                 }}
@@ -63,7 +63,7 @@ export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                className="absolute bottom-1/4 right-2 top-1/4 flex w-2/12 items-center justify-center rounded-xl border-2 border-dashed border-primary bg-primary/10 text-primary md:bottom-2 md:top-1/4 md:w-1/3"
+                className="absolute bottom-1/4 right-2 top-1/4 flex w-2/12 items-center justify-center rounded-xl border-2 border-dashed border-primary bg-primary/10 text-primary lg:bottom-2 lg:top-1/4 lg:w-1/3"
                 style={{
                   writingMode: "vertical-rl",
                 }}
@@ -77,7 +77,7 @@ export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
       <Droppable droppableId="todos">
         {(provided: any) => (
           <ul
-            className="z-20 flex w-full flex-col items-center gap-2"
+            className="z-20 flex w-full flex-col items-center gap-4 pb-8"
             {...provided.droppableProps}
             ref={provided.innerRef}
           >

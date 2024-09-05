@@ -19,19 +19,19 @@ export const FilterSelector = () => {
 
   const filters = [
     {
-      label: "All",
-      value: "all",
-      amount: statistics.total,
+      label: "Not completed",
+      value: "notCompleted",
+      amount: statistics.notCompleted,
     },
     {
-      label: "Completed",
+      label: "Done",
       value: "completed",
       amount: statistics.completed,
     },
     {
-      label: "Not Completed",
-      value: "notCompleted",
-      amount: statistics.notCompleted,
+      label: "All",
+      value: "all",
+      amount: statistics.total,
     },
   ];
 
