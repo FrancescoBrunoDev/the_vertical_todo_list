@@ -1,6 +1,6 @@
 import { createStore } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { isAfter } from "date-fns";
+import { isAfter, add } from "date-fns";
 
 export type ToDoItem = {
   id?: number;
@@ -47,7 +47,31 @@ export type ToDoActions = {
 export type ToDoStore = ToDoActions & ToDoState;
 
 export const initToDoStore = (): ToDoState => {
-  return { todos: [], settings: { filter: "notCompleted" } };
+  return {
+    todos: [
+      {
+        id: 1,
+        text: {
+          title: "Welcome to The Vertical Todo List!",
+          content:
+            "I'm your default todo item, hanging out here patiently. Feel free to drag, drop, add, or edit me—just don’t leave me here too long! Don’t worry, you’ve got a week before I start feeling neglected!",
+        },
+        completed: false,
+        dueDate: add(new Date(), { weeks: 1 }),
+      },
+      {
+        id: 2,
+        text: {
+          title: "Uh-oh, This ToDo is Overdue!",
+          content:
+            "This task has been waiting... and waiting... It's starting to wonder if you'll ever finish it. You can drag it to the top of the list, but it'll still know it's overdue!",
+        },
+        completed: false,
+        dueDate: new Date(),
+      },
+    ],
+    settings: { filter: "notCompleted" },
+  };
 };
 
 export const defaultInitState: ToDoState = {
