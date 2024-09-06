@@ -8,6 +8,7 @@ import { FilterSelector } from "@/components/filterSelector";
 export const Main = () => {
   const { todos, settings } = useToDoStore((state) => state);
 
+  // I wanted to use Object.groupBy, but it don't build on my server
   const groupedTodos = todos.reduce((acc: { [key: string]: any[] }, todo) => {
     const key = todo.completed ? "completed" : "notCompleted";
     if (!acc[key]) {
