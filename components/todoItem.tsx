@@ -39,13 +39,19 @@ export const TodoItem: React.FC<ToDoItem> = ({
     dueDate ? dueDate : new Date(),
   );
   const [isMounted, setIsMounted] = useState<boolean>(false);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const titleTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const adjustTextareaHeight = (textarea: HTMLTextAreaElement | null) => {
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  };
 
   useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-    }
+    adjustTextareaHeight(titleTextareaRef.current);
+    adjustTextareaHeight(contentTextareaRef.current);
   }, [newTodoTitle, newTodoContent]);
 
   const handleNewTodo = () => {
@@ -99,31 +105,33 @@ export const TodoItem: React.FC<ToDoItem> = ({
         )}
 
         <div
-          className={`${isOverdue && "bg-secondary"} ${completed && "bg-primary"} rounded-xl bg-card`}
+          className={`${isOverdue && "bg-secondary"} ${completed && "bg-primary"} flex flex-col gap-2 rounded-xl bg-card p-3`}
         >
-          <CardHeader className="space-y-0 p-3">
+          <CardHeader className="space-y-0 p-0 pb-2">
             <CardTitle>
               <Textarea
-                ref={textareaRef}
+                ref={titleTextareaRef}
                 className={`${PPR.className} focus-visible:ring-none min-h-0 w-full max-w-full resize-none border-none p-0 text-xl font-bold tracking-wider shadow-none focus:outline-none focus:ring-0`}
                 placeholder="Todo Title"
                 value={newTodoTitle}
                 onChange={(e) => setNewTodoTitle(e.target.value)}
+                rows={1}
               />
             </CardTitle>
           </CardHeader>
           {!completed && (
             <>
-              <CardContent className="p-3">
+              <CardContent className="p-0">
                 <Textarea
-                  ref={textareaRef}
+                  ref={contentTextareaRef}
                   className="focus-visible:ring-none min-h-0 w-full max-w-full resize-none border-none p-0 text-sm font-normal shadow-none focus:outline-none focus:ring-0"
                   placeholder="write your todo"
                   value={newTodoContent}
                   onChange={(e) => setNewTodoContent(e.target.value)}
+                  rows={1}
                 />
               </CardContent>
-              <CardFooter className="flex flex-col gap-2 p-3">
+              <CardFooter className="flex flex-col gap-2 p-0">
                 <div className="w-full">
                   <Label className="text-text/80 text-xs">Due Date</Label>
                   <DueDateSetter
