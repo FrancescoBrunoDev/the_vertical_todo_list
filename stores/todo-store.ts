@@ -140,17 +140,13 @@ export const createToDoStore = (initState: ToDoState = defaultInitState) => {
         },
         setIsOverdue: (id: number, isOverdue?: boolean) => {
           set((state) => ({
-            todos: state.todos.map((todo) =>
-              todo.id === id && todo.completed
-                ? {
-                    ...todo,
-                    isOverdue: false,
-                  }
-                : {
-                    ...todo,
-                    isOverdue: isOverdue || new Date() > todo.dueDate,
-                  },
-            ),
+            todos: state.todos.map((todo) => ({
+              ...todo,
+              isOverdue:
+                todo.id === id && todo.completed
+                  ? false
+                  : (isOverdue ?? new Date() > todo.dueDate),
+            })),
           }));
         },
       }),
