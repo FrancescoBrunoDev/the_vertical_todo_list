@@ -8,9 +8,15 @@ import { FilterSelector } from "@/components/filterSelector";
 export const Main = () => {
   const { todos, settings } = useToDoStore((state) => state);
 
-  const groupedTodos = Object.groupBy(todos, (todo) =>
-    todo.completed ? "completed" : "notCompleted",
-  );
+  const groupedTodos = todos.reduce((acc: { [key: string]: any[] }, todo) => {
+    const key = todo.completed ? "completed" : "notCompleted";
+    if (!acc[key]) {
+      acc[key] = [];
+    }
+    acc[key].push(todo);
+    return acc;
+  }, {});
+
   const fiteredTodos =
     settings.filter === "all" ? todos : groupedTodos[settings.filter] || [];
 
