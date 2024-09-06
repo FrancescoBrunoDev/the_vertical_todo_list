@@ -20,7 +20,12 @@ export const Header = () => {
           "flex w-full justify-center p-2 text-center font-black",
         )}
       >
-        <div className="relative">
+        <div
+          className="relative"
+          style={{
+            transform: isFirefox ? "translateY(0.6rem)" : "",
+          }}
+        >
           <span
             className="absolute -left-8 top-[0.7rem] text-[1.5rem] uppercase text-primary"
             style={{
