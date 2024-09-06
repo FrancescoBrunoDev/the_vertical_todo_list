@@ -36,7 +36,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
 }) => {
   const { addTodo, setDueDate, updateTodo } = useToDoStore((state) => state);
 
-  const [todo, setTodo] = useState({
+  const [edited, setEditedTodo] = useState({
     title: text?.title || "",
     content: text?.content || "",
     dueDate: dueDate || new Date(),
@@ -56,24 +56,24 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   useEffect(() => {
     adjustTextareaHeight(titleTextareaRef.current);
     adjustTextareaHeight(contentTextareaRef.current);
-  }, [todo.title, todo.content]);
+  }, [edited.title, edited.content]);
 
   // update todo
   useEffect(() => {
     if (id) {
       const updatedAt = new Date();
-      updateTodo(id, todo.title, todo.content, todo.dueDate, updatedAt);
+      updateTodo(id, edited.title, edited.content, edited.dueDate, updatedAt);
     }
-  }, [todo, completed, id]);
+  }, [edited, completed, id]);
 
   // add todo
   const handleAddTodo = () => {
-    if (todo.title.trim() && todo.content.trim()) {
-      const newId = addTodo(todo.title, todo.content);
-      if (todo.dueDate && newId) {
-        setDueDate(newId, todo.dueDate);
+    if (edited.title.trim() && edited.content.trim()) {
+      const newId = addTodo(edited.title, edited.content);
+      if (edited.dueDate && newId) {
+        setDueDate(newId, edited.dueDate);
       }
-      setTodo({ title: "", content: "", dueDate: new Date() });
+      setEditedTodo({ title: "", content: "", dueDate: new Date() });
     }
   };
 
@@ -89,8 +89,8 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   // determine if todo is overdue
   const isOverdue = useMemo(() => {
     if (!id || completed) return false;
-    return isAfter(new Date(), todo.dueDate);
-  }, [todo.dueDate, completed, id]);
+    return isAfter(new Date(), edited.dueDate);
+  }, [edited.dueDate, completed, id]);
 
   return (
     <motion.div
@@ -131,9 +131,9 @@ export const TodoItem: React.FC<TodoItemProps> = ({
                   "focus-visible:ring-none min-h-0 w-full max-w-full resize-none border-none p-0 text-xl font-bold tracking-wider shadow-none focus:outline-none focus:ring-0",
                 )}
                 placeholder="Todo Title"
-                value={todo.title}
+                value={edited.title}
                 onChange={(e) =>
-                  setTodo((prev) => ({ ...prev, title: e.target.value }))
+                  setEditedTodo((prev) => ({ ...prev, title: e.target.value }))
                 }
                 rows={1}
               />
@@ -147,9 +147,12 @@ export const TodoItem: React.FC<TodoItemProps> = ({
                   ref={contentTextareaRef}
                   className="focus-visible:ring-none min-h-0 w-full max-w-full resize-none border-none p-0 text-sm font-normal shadow-none focus:outline-none focus:ring-0"
                   placeholder="Write your todo"
-                  value={todo.content}
+                  value={edited.content}
                   onChange={(e) =>
-                    setTodo((prev) => ({ ...prev, content: e.target.value }))
+                    setEditedTodo((prev) => ({
+                      ...prev,
+                      content: e.target.value,
+                    }))
                   }
                   rows={1}
                 />
@@ -159,9 +162,12 @@ export const TodoItem: React.FC<TodoItemProps> = ({
                 <div className="w-full">
                   <Label className="text-text/80 text-xs">Due Date</Label>
                   <DueDateSetter
-                    dueDate={todo.dueDate}
+                    dueDate={edited.dueDate}
                     setnewDueDateState={(newDueDate: Date) =>
-                      setTodo((prev) => ({ ...prev, dueDate: newDueDate }))
+                      setEditedTodo((prev) => ({
+                        ...prev,
+                        dueDate: newDueDate,
+                      }))
                     }
                   />
                 </div>
@@ -172,7 +178,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
                     whileHover={{ scale: 1.1, rotate: [5, 0] }}
                   >
                     <Button
-                      disabled={!todo.title.trim() || !todo.content.trim()}
+                      disabled={!edited.title.trim() || !edited.content.trim()}
                       className="text-background"
                       type="submit"
                       onClick={handleAddTodo}
