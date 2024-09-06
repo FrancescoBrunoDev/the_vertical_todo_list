@@ -14,7 +14,7 @@ const droppableAreas = [
       "border-secondary bg-secondary/10 text-secondary left-0 opacity-40",
   },
   {
-    title: "drag here to complete",
+    title: "drag here to mark as done",
     id: "completed",
     additionalClasses:
       "border-primary bg-primary/10 text-primary right-0 opacity-70",
