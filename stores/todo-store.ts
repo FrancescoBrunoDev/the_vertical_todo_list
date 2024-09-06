@@ -1,6 +1,6 @@
 import { createStore } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { isAfter, add } from "date-fns";
+import { isAfter, add, sub } from "date-fns";
 
 export type ToDoItem = {
   id?: number;
@@ -67,7 +67,7 @@ export const initToDoStore = (): ToDoState => {
             "This task has been waiting... and waiting... It's starting to wonder if you'll ever finish it. You can drag it to the top of the list, but it'll still know it's overdue!",
         },
         completed: false,
-        dueDate: new Date(),
+        dueDate: sub(new Date(), { days: 1 }),
       },
     ],
     settings: { filter: "notCompleted" },
