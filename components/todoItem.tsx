@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useToDoStore } from "@/provider/todo-store-provider";
 import {
   Card,
@@ -15,6 +15,9 @@ import { Label } from "@/components/ui/label";
 import { Info, GripHorizontal, Plus } from "lucide-react";
 import { motion } from "framer-motion";
 import { ToDoItem } from "@/stores/todo-store";
+import { isAfter } from "date-fns";
+import { CircleNumber } from "@/components/circleNumber";
+import { cn } from "@/lib/utils";
 
 type TodoItemProps = ToDoItem & {
   index?: number;
@@ -28,22 +31,21 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   createdAt,
   dueDate,
   updatedAt,
-  isOverdue,
   index,
   isDragging,
 }) => {
-  const { addTodo, setDueDate, updateTodo, setIsOverdue } = useToDoStore(
-    (state) => state,
-  );
+  const { addTodo, setDueDate, updateTodo } = useToDoStore((state) => state);
 
   const [todo, setTodo] = useState({
     title: text?.title || "",
     content: text?.content || "",
+    dueDate: dueDate || new Date(),
   });
-  const [dueDateState, setDueDateState] = useState(dueDate || new Date());
+
   const titleTextareaRef = useRef<HTMLTextAreaElement>(null);
   const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
 
+  // adjust textarea height
   const adjustTextareaHeight = (textarea: HTMLTextAreaElement | null) => {
     if (textarea) {
       textarea.style.height = "auto";
@@ -54,30 +56,41 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   useEffect(() => {
     adjustTextareaHeight(titleTextareaRef.current);
     adjustTextareaHeight(contentTextareaRef.current);
-  }, [todo]);
+  }, [todo.title, todo.content]);
 
+  // update todo
   useEffect(() => {
     if (id) {
       const updatedAt = new Date();
-      updateTodo(id, todo.title, todo.content, dueDateState, updatedAt);
-      setIsOverdue(id);
+      updateTodo(id, todo.title, todo.content, todo.dueDate, updatedAt);
     }
-  }, [todo, dueDateState, completed, id]);
+  }, [todo, completed, id]);
 
+  // add todo
   const handleAddTodo = () => {
     if (todo.title.trim() && todo.content.trim()) {
       const newId = addTodo(todo.title, todo.content);
-      if (dueDateState && newId) {
-        setDueDate(newId, dueDateState);
+      if (todo.dueDate && newId) {
+        setDueDate(newId, todo.dueDate);
       }
-      setTodo({ title: "", content: "" });
+      setTodo({ title: "", content: "", dueDate: new Date() });
     }
   };
 
-  const dateLastChange = (updatedAt?: Date, createdAt?: Date) => {
-    const date = updatedAt || createdAt;
-    return date ? new Date(date).toLocaleString() : "";
-  };
+  // set due date
+  const dateLastChange = useMemo(
+    () => (updatedAt?: Date, createdAt?: Date) => {
+      const date = updatedAt || createdAt;
+      return date ? new Date(date).toLocaleString() : "";
+    },
+    [],
+  );
+
+  // determine if todo is overdue
+  const isOverdue = useMemo(() => {
+    if (!id || completed) return false;
+    return isAfter(new Date(), todo.dueDate);
+  }, [todo.dueDate, completed, id]);
 
   return (
     <motion.div
@@ -88,26 +101,35 @@ export const TodoItem: React.FC<TodoItemProps> = ({
       whileHover={isDragging ? { scale: 1.05, x: [0, -2, 2, -2, 2, 0] } : {}}
     >
       <Card
-        className={`relative w-52 border-none bg-primary shadow-md transition-all hover:scale-105 hover:drop-shadow-xl md:w-72 ${id && "group hover:pt-5"}`}
+        className={cn(
+          "relative w-52 border-none bg-primary shadow-md transition-all hover:scale-105 hover:drop-shadow-xl md:w-72",
+          { "group hover:pt-5": id },
+        )}
       >
         {id && (
           <>
             <div className="absolute left-0 right-0 top-0 w-full opacity-0 transition-opacity group-hover:opacity-100 md:items-center">
               <GripHorizontal className="h-6 w-full" />
             </div>
-            <div className="absolute -left-7 hidden h-6 w-6 items-center justify-center rounded-full bg-card md:flex">
-              <span className="text-xs">{(index ?? 0) + 1}</span>
+            <div className="absolute -left-7">
+              <CircleNumber number={(index || 0) + 1} />
             </div>
           </>
         )}
         <div
-          className={`${isOverdue && "bg-secondary"} ${completed && "bg-primary"} flex flex-col gap-2 rounded-xl bg-card p-3`}
+          className={cn("flex flex-col gap-2 rounded-xl bg-card p-3", {
+            "bg-secondary": isOverdue,
+            "bg-primary": completed,
+          })}
         >
           <CardHeader className="space-y-0 p-0 pb-2">
             <CardTitle>
               <Textarea
                 ref={titleTextareaRef}
-                className={`${PPR.className} focus-visible:ring-none min-h-0 w-full max-w-full resize-none border-none p-0 text-xl font-bold tracking-wider shadow-none focus:outline-none focus:ring-0`}
+                className={cn(
+                  PPR.className,
+                  "focus-visible:ring-none min-h-0 w-full max-w-full resize-none border-none p-0 text-xl font-bold tracking-wider shadow-none focus:outline-none focus:ring-0",
+                )}
                 placeholder="Todo Title"
                 value={todo.title}
                 onChange={(e) =>
@@ -137,8 +159,10 @@ export const TodoItem: React.FC<TodoItemProps> = ({
                 <div className="w-full">
                   <Label className="text-text/80 text-xs">Due Date</Label>
                   <DueDateSetter
-                    dueDate={dueDateState}
-                    setnewDueDateState={setDueDateState}
+                    dueDate={todo.dueDate}
+                    setnewDueDateState={(newDueDate: Date) =>
+                      setTodo((prev) => ({ ...prev, dueDate: newDueDate }))
+                    }
                   />
                 </div>
 
@@ -152,7 +176,6 @@ export const TodoItem: React.FC<TodoItemProps> = ({
                       className="text-background"
                       type="submit"
                       onClick={handleAddTodo}
-                      // when press it should add todo
                     >
                       <Plus />
                     </Button>

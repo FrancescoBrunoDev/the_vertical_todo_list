@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { PPR } from "@/app/fonts";
 import Bowser from "bowser";
+import { cn } from "@/lib/utils";
 
 export const Header = () => {
   const [isFirefox, setIsFirefox] = useState(false);
@@ -14,7 +15,10 @@ export const Header = () => {
   return (
     <div className="fixed inset-x-0 -top-8 z-50 scale-75 bg-background pb-0 md:pb-8">
       <h2
-        className={`${PPR.className} flex w-full justify-center p-2 text-center font-black`}
+        className={cn(
+          PPR.className,
+          "flex w-full justify-center p-2 text-center font-black",
+        )}
       >
         <div className="relative">
           <span

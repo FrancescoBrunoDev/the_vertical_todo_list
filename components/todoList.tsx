@@ -11,9 +11,7 @@ type ToDoListProps = {
 };
 
 export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
-  const { setTodos, removeTodo, toggleTodo, setIsOverdue } = useToDoStore(
-    (state) => state,
-  );
+  const { setTodos, removeTodo, toggleTodo } = useToDoStore((state) => state);
   const [isDragging, setIsDragging] = useState(false);
 
   const handleOnDragStart = () => {
@@ -38,23 +36,23 @@ export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
 
     // the store's Actions are expeting a number as id
     const todoId = Number(result.draggableId);
-    console.log(destinationId);
+
     //handle moving itmes in different zones
     if (destinationId === "delete") {
       removeTodo(todoId);
     } else if (destinationId === "completed") {
-      const end = Date.now() + 1 * 300;
+      const endConfetti = Date.now() + 1 * 300;
       const colors = ["#a786ff", "#fd8bbc", "#eca184", "#f8deb1"];
 
       const frame = () => {
-        if (Date.now() > end) return;
+        if (Date.now() > endConfetti) return;
 
         confetti({
           particleCount: 2,
           angle: 120,
           spread: 55,
           startVelocity: 60,
-          origin: { x: 1, y: 0.5 },
+          origin: { x: 1 },
           colors: colors,
         });
 
@@ -62,7 +60,6 @@ export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
       };
 
       toggleTodo(todoId);
-      setIsOverdue(todoId);
       const completeState = todos.find((todo) => todo.id === todoId)?.completed;
 
       if (!completeState) frame();
