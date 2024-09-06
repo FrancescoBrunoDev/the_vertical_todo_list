@@ -54,7 +54,7 @@ export const initToDoStore = (): ToDoState => {
         text: {
           title: "Welcome to The Vertical Todo List!",
           content:
-            "I'm your default todo item, hanging out here patiently. Feel free to drag, drop, add, or edit me—just don’t leave me here too long! Don’t worry, you’ve got a week before I start feeling neglected!",
+            "I'm your default todo item, hanging out here patiently. Feel free to drag and drop me—just don’t leave me here too long! Don’t worry, you’ve got a week before I start feeling neglected!",
         },
         completed: false,
         dueDate: add(new Date(), { weeks: 1 }),
