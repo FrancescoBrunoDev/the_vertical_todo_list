@@ -10,12 +10,14 @@ const droppableAreas = [
   {
     title: "drag here to delete",
     id: "delete",
-    additionalClasses: "border-secondary bg-secondary/10 text-secondary left-0",
+    additionalClasses:
+      "border-secondary bg-secondary/10 text-secondary left-0 opacity-40",
   },
   {
     title: "drag here to complete",
     id: "completed",
-    additionalClasses: "border-primary bg-primary/10 text-primary right-0",
+    additionalClasses:
+      "border-primary bg-primary/10 text-primary right-0 opacity-70",
   },
 ];
 
@@ -33,7 +35,7 @@ export const ActionDraggableAreas: React.FC<DroppableAreaProps> = ({
               ref={provided.innerRef}
               {...provided.droppableProps}
               className={cn(
-                "absolute top-0 flex h-full w-2/12 items-center justify-center rounded-xl border-2 border-dashed opacity-40 transition-all lg:w-1/4",
+                "absolute top-0 flex h-full w-2/12 items-center justify-center rounded-xl border-2 border-dashed transition-all lg:w-1/4",
                 additionalClasses,
                 isDragging && "opacity-100 hover:scale-105",
               )}
