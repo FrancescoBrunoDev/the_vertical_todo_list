@@ -1,10 +1,6 @@
 import { TodoItem } from "@/components/todoItem";
 import type { ToDoItem } from "@/stores/todo-store";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-} from "react-beautiful-dnd-next";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { useToDoStore } from "@/provider/todo-store-provider";
 import confetti from "canvas-confetti";
 import { ActionDraggableAreas } from "@/components/actionDraggableAreas";
@@ -33,9 +29,12 @@ export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
       setTodos(newItems);
     }
 
+    // the store's Actions are expeting a number as id
+    const todoId = Number(result.draggableId);
+
     //handle moving itmes in different zones
     if (destinationId === "delete") {
-      removeTodo(result.draggableId);
+      removeTodo(todoId);
     } else if (destinationId === "completed") {
       const end = Date.now() + 1 * 300; // 3 seconds
       const colors = ["#a786ff", "#fd8bbc", "#eca184", "#f8deb1"];
@@ -55,11 +54,9 @@ export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
         requestAnimationFrame(frame);
       };
 
-      toggleTodo(result.draggableId);
-      setIsOverdue(result.draggableId);
-      const completeState = todos.find(
-        (todo) => todo.id === result.draggableId,
-      )?.completed;
+      toggleTodo(todoId);
+      setIsOverdue(todoId);
+      const completeState = todos.find((todo) => todo.id === todoId)?.completed;
 
       if (!completeState) frame();
     }
@@ -75,19 +72,29 @@ export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
-            {todos.map((todo, index) => (
-              <Draggable key={todo.id} draggableId={todo.id} index={index}>
-                {(provided: any) => (
-                  <li
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                  >
-                    <TodoItem {...todo} />
-                  </li>
-                )}
-              </Draggable>
-            ))}
+            {todos.map((todo, index) =>
+              todo.id ? (
+                <Draggable
+                  key={todo.id}
+                  draggableId={todo.id.toString()}
+                  index={index}
+                >
+                  {(provided: any) => (
+                    <li
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <TodoItem {...todo} />
+                    </li>
+                  )}
+                </Draggable>
+              ) : (
+                <li key={index}>
+                  <TodoItem {...todo} />
+                </li>
+              ),
+            )}
             {provided.placeholder}
           </ul>
         )}

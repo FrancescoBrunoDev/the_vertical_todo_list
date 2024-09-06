@@ -1,4 +1,4 @@
-import { Droppable } from "react-beautiful-dnd-next";
+import { Droppable } from "@hello-pangea/dnd";
 
 export const ActionDraggableAreas = () => {
   return (
