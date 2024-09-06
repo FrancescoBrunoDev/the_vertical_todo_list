@@ -1,5 +1,6 @@
 import { createStore } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { isAfter } from "date-fns";
 
 export type ToDoItem = {
   id?: number;
@@ -24,7 +25,7 @@ export type ToDoState = {
 };
 
 export type ToDoActions = {
-  addTodo: (title: string, content: string) => void;
+  addTodo: (title: string, content: string) => number | undefined;
   removeTodo: (id: number) => void;
   updateTodo: (
     id: number,
@@ -126,7 +127,7 @@ export const createToDoStore = (initState: ToDoState = defaultInitState) => {
           set((state) => ({
             todos: state.todos.map((todo) =>
               todo.id === id
-                ? { ...todo, dueDate, isOverdue: new Date() > dueDate }
+                ? { ...todo, dueDate, isOverdue: isAfter(new Date(), dueDate) }
                 : todo,
             ),
           })),
@@ -145,7 +146,7 @@ export const createToDoStore = (initState: ToDoState = defaultInitState) => {
               isOverdue:
                 todo.id === id && todo.completed
                   ? false
-                  : (isOverdue ?? new Date() > todo.dueDate),
+                  : (isOverdue ?? isAfter(new Date(), todo.dueDate)),
             })),
           }));
         },

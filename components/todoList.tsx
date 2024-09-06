@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { TodoItem } from "@/components/todoItem";
 import type { ToDoItem } from "@/stores/todo-store";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
@@ -13,8 +14,14 @@ export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
   const { setTodos, removeTodo, toggleTodo, setIsOverdue } = useToDoStore(
     (state) => state,
   );
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleOnDragStart = () => {
+    setIsDragging(true);
+  };
 
   const handleOnDragEnd = (result: any) => {
+    setIsDragging(false);
     if (!result.destination) return;
 
     const sourceId = result.source.droppableId;
@@ -31,12 +38,12 @@ export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
 
     // the store's Actions are expeting a number as id
     const todoId = Number(result.draggableId);
-
+    console.log(destinationId);
     //handle moving itmes in different zones
     if (destinationId === "delete") {
       removeTodo(todoId);
     } else if (destinationId === "completed") {
-      const end = Date.now() + 1 * 300; // 3 seconds
+      const end = Date.now() + 1 * 300;
       const colors = ["#a786ff", "#fd8bbc", "#eca184", "#f8deb1"];
 
       const frame = () => {
@@ -63,12 +70,15 @@ export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
   };
 
   return (
-    <DragDropContext onDragEnd={handleOnDragEnd}>
-      <ActionDraggableAreas />
+    <DragDropContext
+      onDragStart={handleOnDragStart}
+      onDragEnd={handleOnDragEnd}
+    >
+      <ActionDraggableAreas isDragging={isDragging} />
       <Droppable droppableId="todos">
         {(provided: any) => (
           <ul
-            className="z-20 flex w-full flex-col items-center gap-4 pb-8"
+            className="z-20 flex flex-col items-center gap-4 pb-8"
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
@@ -85,7 +95,7 @@ export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                     >
-                      <TodoItem {...todo} />
+                      <TodoItem {...todo} index={index} />
                     </li>
                   )}
                 </Draggable>
