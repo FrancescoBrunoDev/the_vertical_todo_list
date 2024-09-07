@@ -30,8 +30,9 @@ pnpm dev
 bun dev
 ```
 
-Technologies Used
+## Technologies Used
 - Next.js
 - React
 - Zustand
 - Tailwind CSS
+- shadcn/ui
