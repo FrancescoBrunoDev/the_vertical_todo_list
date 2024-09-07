@@ -19,7 +19,7 @@ interface ModeToggleProps {
 }
 
 export function ModeToggle({ className }: ModeToggleProps) {
-  const { updateSettings } = useToDoStore((state) => state);
+  const { updateSettings, settings } = useToDoStore((state) => state);
   const { setTheme } = useTheme();
 
   const handleThemeChange = (theme: "light" | "dark" | "system") => {
@@ -46,11 +46,16 @@ export function ModeToggle({ className }: ModeToggleProps) {
           {themes.map((theme) => (
             <DropdownMenuItem
               key={theme}
-              className="bg-transparent focus:bg-primary"
+              className="flex items-center gap-1 bg-transparent focus:bg-primary"
               onClick={() =>
                 handleThemeChange(theme as "light" | "dark" | "system")
               }
             >
+              {theme == settings.theme ? (
+                <div className="h-2 w-2 rounded-full bg-primary" />
+              ) : (
+                <div className="h-2 w-2 rounded-full border-2 border-primary bg-transparent" />
+              )}
               {theme}
             </DropdownMenuItem>
           ))}
