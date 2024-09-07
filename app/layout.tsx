@@ -6,6 +6,7 @@ import { Header } from "@/components/header";
 import { ToDoStoreProvider } from "@/provider/todo-store-provider";
 import { ThemeProvider } from "@/provider/theme-provider";
 import { ModeToggle } from "@/components/modeTheme";
+import { SelfHosted } from "@/components/selfhosted";
 
 export const metadata: Metadata = {
   title: "The Vertical Todo List",
@@ -33,6 +34,7 @@ export default function RootLayout({
               <Header />
               {children}
             </ToDoStoreProvider>
+            <SelfHosted />
           </main>
         </ThemeProvider>
       </body>
