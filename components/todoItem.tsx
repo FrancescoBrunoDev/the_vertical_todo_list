@@ -64,7 +64,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
       const updatedAt = new Date();
       updateTodo(id, edited.title, edited.content, edited.dueDate, updatedAt);
     }
-  }, [edited, completed, id]);
+  }, [edited, completed, id, updateTodo]);
 
   // add todo
   const handleAddTodo = () => {

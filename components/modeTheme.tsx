@@ -45,6 +45,7 @@ export function ModeToggle({ className }: ModeToggleProps) {
         <DropdownMenuContent align="end" className="border-2 bg-background">
           {themes.map((theme) => (
             <DropdownMenuItem
+              key={theme}
               className="bg-transparent focus:bg-primary"
               onClick={() =>
                 handleThemeChange(theme as "light" | "dark" | "system")

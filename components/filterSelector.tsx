@@ -17,7 +17,7 @@ export const FilterSelector = () => {
 
   useEffect(() => {
     setStatistics(getStatistics());
-  }, [todos]);
+  }, [todos, getStatistics]);
 
   const filters = [
     {
