@@ -4,6 +4,7 @@ import { useToDoStore } from "@/provider/todo-store-provider";
 import { TodoItem } from "@/components/todoItem";
 import { ToDoList } from "@/components/todoList";
 import { FilterSelector } from "@/components/filterSelector";
+import { addDays } from "date-fns";
 
 export const Main = () => {
   const { todos, settings } = useToDoStore((state) => state);
@@ -47,7 +48,7 @@ const NewTodo = () => {
     },
     completed: false,
     createdAt: undefined,
-    dueDate: new Date(),
+    dueDate: addDays(new Date(), 3),
     updatedAt: undefined,
     isOverdue: false,
   };
