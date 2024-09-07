@@ -31,8 +31,8 @@ bun dev
 ```
 
 ## Technologies Used
-- Next.js
-- React
-- Zustand
-- Tailwind CSS
-- shadcn/ui
+- [Next.js](https://nextjs.org/)
+- [Zustand](https://zustand-demo.pmnd.rs/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [framer/motion](https://github.com/framer/motion)
