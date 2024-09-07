@@ -15,7 +15,6 @@ export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
   const [idDragged, setIdDragged] = useState<number | null>(null);
 
   const handleOnDragStart = (result: any) => {
-    console.log(result);
     setIdDragged(Number(result.draggableId));
   };
 

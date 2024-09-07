@@ -71,6 +71,16 @@ export const initToDoStore = (): ToDoState => {
         completed: false,
         dueDate: sub(new Date(), { days: 1 }),
       },
+      {
+        id: 3,
+        text: {
+          title: "Completed, But Not Forgotten!",
+          content:
+            "You crossed me off, but don’t get too comfortable. One quick drag and I’m back in action, but be warned—I’m overdue and I know it!",
+        },
+        completed: true,
+        dueDate: sub(new Date(), { weeks: 3 }),
+      },
     ],
     settings: { filter: "notCompleted", theme: "system" },
   };

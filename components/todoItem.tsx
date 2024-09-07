@@ -118,10 +118,11 @@ export const TodoItem: React.FC<TodoItemProps> = ({
         )}
         <div
           className={cn(
-            "flex flex-col gap-2 rounded-xl bg-card p-3 dark:border-2 dark:border-primary/50 dark:bg-background",
+            "flex flex-col gap-2 rounded-xl bg-card p-3 dark:border-2 dark:border-card dark:bg-background",
             {
               "bg-secondary dark:border-secondary": isOverdue,
-              "bg-primary dark:border-2 dark:bg-background": completed,
+              "bg-primary dark:border-2 dark:border-primary dark:bg-background":
+                completed,
             },
           )}
         >
@@ -143,24 +144,23 @@ export const TodoItem: React.FC<TodoItemProps> = ({
             </CardTitle>
           </CardHeader>
 
+          <CardContent className="p-0">
+            <Textarea
+              ref={contentTextareaRef}
+              className="focus-visible:ring-none placeholder:text-text/30 dark:placeholder:text-text/80 min-h-0 w-full max-w-full resize-none border-none p-0 text-sm font-normal shadow-none focus:outline-none focus:ring-0"
+              placeholder="Write your todo"
+              value={edited.content}
+              onChange={(e) =>
+                setEditedTodo((prev) => ({
+                  ...prev,
+                  content: e.target.value,
+                }))
+              }
+              rows={1}
+            />
+          </CardContent>
           {!completed && (
             <>
-              <CardContent className="p-0">
-                <Textarea
-                  ref={contentTextareaRef}
-                  className="focus-visible:ring-none placeholder:text-text/30 dark:placeholder:text-text/80 min-h-0 w-full max-w-full resize-none border-none p-0 text-sm font-normal shadow-none focus:outline-none focus:ring-0"
-                  placeholder="Write your todo"
-                  value={edited.content}
-                  onChange={(e) =>
-                    setEditedTodo((prev) => ({
-                      ...prev,
-                      content: e.target.value,
-                    }))
-                  }
-                  rows={1}
-                />
-              </CardContent>
-
               <CardFooter className="flex flex-col gap-2 p-0">
                 <div className="w-full">
                   <Label className="text-xs">Due Date</Label>
