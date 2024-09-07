@@ -1,6 +1,6 @@
 import { display } from "@/app/fonts";
 import { cn } from "@/lib/utils";
-import Logo from "../public/logo.svg";
+import Logo from "@/public/logo.svg";
 
 export const Header = () => {
   return (
