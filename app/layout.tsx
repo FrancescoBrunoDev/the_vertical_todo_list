@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { inter } from "./fonts";
+import { body } from "./fonts";
 import { Header } from "@/components/header";
 
 import { ToDoStoreProvider } from "@/provider/todo-store-provider";
+import { ThemeProvider } from "@/provider/theme-provider";
+import { ModeToggle } from "@/components/modeTheme";
 
 export const metadata: Metadata = {
   title: "The Vertical Todo List",
@@ -18,11 +20,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <main className="flex h-screen w-screen justify-center font-normal">
-          <Header />
-          <ToDoStoreProvider>{children}</ToDoStoreProvider>
-        </main>
+      <body className={body.className}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <main className="flex h-screen w-screen justify-center font-normal">
+            <ToDoStoreProvider>
+              <ModeToggle className="fixed right-4 top-4 z-50" />
+              <Header />
+              {children}
+            </ToDoStoreProvider>
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   );

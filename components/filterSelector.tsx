@@ -42,7 +42,7 @@ export const FilterSelector = () => {
       {filters.map((filter) => (
         <Button
           className={cn(
-            "flex gap-1 bg-background/50 text-black/70 transition-all hover:scale-105 hover:bg-background",
+            "dark:bg-text flex gap-1 bg-background/50 text-black/70 transition-all hover:scale-105 hover:bg-background",
             filter.value === settings.filter
               ? "bg-background text-black/90"
               : "shadow-none",

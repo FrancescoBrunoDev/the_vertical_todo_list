@@ -60,7 +60,9 @@ const config: Config = {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
-        text: "hsl(var(--text))",
+        text: {
+          DEFAULT: "hsl(var(--text))",
+        },
       },
       keyframes: {
         "shine-pulse": {

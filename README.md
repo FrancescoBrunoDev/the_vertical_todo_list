@@ -5,6 +5,10 @@ This is a Todo List application built with [Next.js](https://nextjs.org/).
 ## live Version
 [Check out the live version here](https://tvtl.francesco-bruno.com/)
 
+## Inspiration
+![Vertical Todo List](https://tvtl.francesco-bruno.com/vertical-todo-list.png)
+The vertical design of this todo list was inspired by a cool vertical todo list I saw at a friend's house. It had a rolled-up paper look that was both unique and practical. I wanted to bring that same vertical layout and organized feel into this digital version. I think this design can help you tackle tasks in chronological order and stay more focused.
+
 ## Features
 
 - Add, edit, and delete todo items.

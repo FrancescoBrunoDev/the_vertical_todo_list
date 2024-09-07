@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { DueDateSetter } from "@/components/dueDateSetter";
 import { Textarea } from "@/components/ui/textarea";
-import { PPR } from "@/app/fonts";
+import { display } from "@/app/fonts";
 import { Label } from "@/components/ui/label";
 import { Info, GripHorizontal, Plus } from "lucide-react";
 import { motion } from "framer-motion";
@@ -103,7 +103,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
       <Card
         className={cn(
           "relative w-52 border-none bg-primary shadow-md transition-all hover:scale-105 hover:drop-shadow-xl md:w-72",
-          { "group hover:pt-5": id },
+          { "group hover:pt-6": id, "dark:bg-secondary": isOverdue },
         )}
       >
         {id && (
@@ -117,18 +117,21 @@ export const TodoItem: React.FC<TodoItemProps> = ({
           </>
         )}
         <div
-          className={cn("flex flex-col gap-2 rounded-xl bg-card p-3", {
-            "bg-secondary": isOverdue,
-            "bg-primary": completed,
-          })}
+          className={cn(
+            "flex flex-col gap-2 rounded-xl bg-card p-3 dark:border-2 dark:border-primary/50 dark:bg-background",
+            {
+              "bg-secondary dark:border-secondary": isOverdue,
+              "bg-primary dark:border-2 dark:bg-background": completed,
+            },
+          )}
         >
           <CardHeader className="space-y-0 p-0 pb-2">
             <CardTitle>
               <Textarea
                 ref={titleTextareaRef}
                 className={cn(
-                  PPR.className,
-                  "focus-visible:ring-none min-h-0 w-full max-w-full resize-none border-none p-0 text-xl font-bold tracking-wider shadow-none focus:outline-none focus:ring-0",
+                  display.className,
+                  "focus-visible:ring-none placeholder:text-text/30 dark:placeholder:text-text/80 min-h-0 w-full max-w-full resize-none border-none p-0 text-xl font-bold uppercase tracking-wider shadow-none focus:outline-none focus:ring-0",
                 )}
                 placeholder="Todo Title"
                 value={edited.title}
@@ -145,7 +148,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
               <CardContent className="p-0">
                 <Textarea
                   ref={contentTextareaRef}
-                  className="focus-visible:ring-none min-h-0 w-full max-w-full resize-none border-none p-0 text-sm font-normal shadow-none focus:outline-none focus:ring-0"
+                  className="focus-visible:ring-none placeholder:text-text/30 dark:placeholder:text-text/80 min-h-0 w-full max-w-full resize-none border-none p-0 text-sm font-normal shadow-none focus:outline-none focus:ring-0"
                   placeholder="Write your todo"
                   value={edited.content}
                   onChange={(e) =>
@@ -160,7 +163,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
 
               <CardFooter className="flex flex-col gap-2 p-0">
                 <div className="w-full">
-                  <Label className="text-text/80 text-xs">Due Date</Label>
+                  <Label className="text-xs">Due Date</Label>
                   <DueDateSetter
                     dueDate={edited.dueDate}
                     setnewDueDateState={(newDueDate: Date) =>
@@ -174,8 +177,15 @@ export const TodoItem: React.FC<TodoItemProps> = ({
 
                 {!id ? (
                   <motion.div
+                    initial={{ scale: 1, rotate: 0 }}
                     whileTap={{ scale: 0.9 }}
-                    whileHover={{ scale: 1.1, rotate: [5, 0] }}
+                    whileHover={{
+                      scale: 1.1,
+                      rotate: 5,
+                      transition: {
+                        duration: 0.5,
+                      },
+                    }}
                   >
                     <Button
                       disabled={!edited.title.trim() || !edited.content.trim()}

@@ -1,9 +1,9 @@
-import { Inter } from "next/font/google";
+import { Source_Sans_3 } from "next/font/google";
 import localFont from "next/font/local";
 
-export const inter = Inter({ subsets: ["latin"] });
+export const body = Source_Sans_3({ subsets: ["latin"] });
 
-export const PPR = localFont({
+export const display = localFont({
   src: [
     {
       path: "../fonts/PPRaderBold.otf",

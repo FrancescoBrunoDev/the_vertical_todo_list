@@ -22,17 +22,19 @@ export const Main = () => {
     settings.filter === "all" ? todos : groupedTodos[settings.filter] || [];
 
   return (
-    <div className="container mt-52 flex w-full flex-col items-center gap-36 md:mt-[17rem]">
-      <div className="fixed bottom-2 z-50 md:bottom-auto md:top-48">
+    <>
+      <div className="fixed bottom-2 z-50 md:bottom-auto md:top-40">
         <FilterSelector />
       </div>
-      <div className="flex flex-col items-center justify-center gap-8">
-        <div className="z-20 border-b-2">
-          <NewTodo />
+      <div className="container mt-32 flex w-full flex-col items-center gap-36 md:mt-60">
+        <div className="flex flex-col items-center justify-center gap-8">
+          <div className="z-20">
+            <NewTodo />
+          </div>
+          <ToDoList todos={fiteredTodos} />
         </div>
-        <ToDoList todos={fiteredTodos} />
       </div>
-    </div>
+    </>
   );
 };
 

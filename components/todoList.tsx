@@ -12,14 +12,15 @@ type ToDoListProps = {
 
 export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
   const { setTodos, removeTodo, toggleTodo } = useToDoStore((state) => state);
-  const [isDragging, setIsDragging] = useState(false);
+  const [idDragged, setIdDragged] = useState<number | null>(null);
 
-  const handleOnDragStart = () => {
-    setIsDragging(true);
+  const handleOnDragStart = (result: any) => {
+    console.log(result);
+    setIdDragged(Number(result.draggableId));
   };
 
   const handleOnDragEnd = (result: any) => {
-    setIsDragging(false);
+    setIdDragged(null);
     if (!result.destination) return;
 
     const sourceId = result.source.droppableId;
@@ -71,7 +72,7 @@ export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
       onDragStart={handleOnDragStart}
       onDragEnd={handleOnDragEnd}
     >
-      <ActionDraggableAreas isDragging={isDragging} />
+      <ActionDraggableAreas idDragged={idDragged} />
       <Droppable droppableId="todos">
         {(provided: any) => (
           <ul

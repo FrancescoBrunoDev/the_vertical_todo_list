@@ -16,6 +16,7 @@ export type ToDoItem = {
 
 export type ToDoSettings = {
   filter: "all" | "notCompleted" | "completed";
+  theme: "light" | "dark" | "system";
 };
 
 export type ToDoState = {
@@ -34,7 +35,7 @@ export type ToDoActions = {
     updatedAt?: Date,
   ) => void;
   toggleTodo: (id: number) => void;
-  updateSettings: (settings: ToDoSettings) => void;
+  updateSettings: (settings: Partial<ToDoSettings>) => void;
   setDueDate: (id: number, dueDate: Date) => void;
   getStatistics: () => {
     total: number;
@@ -42,6 +43,7 @@ export type ToDoActions = {
     notCompleted: number;
   };
   setTodos: (todos: ToDoItem[]) => void;
+  getTodo: (id: number) => ToDoItem | undefined;
 };
 
 export type ToDoStore = ToDoActions & ToDoState;
@@ -70,13 +72,13 @@ export const initToDoStore = (): ToDoState => {
         dueDate: sub(new Date(), { days: 1 }),
       },
     ],
-    settings: { filter: "notCompleted" },
+    settings: { filter: "notCompleted", theme: "system" },
   };
 };
 
 export const defaultInitState: ToDoState = {
   todos: [],
-  settings: { filter: "all" },
+  settings: { filter: "all", theme: "system" },
 };
 
 export const createToDoStore = (initState: ToDoState = defaultInitState) => {
@@ -100,6 +102,9 @@ export const createToDoStore = (initState: ToDoState = defaultInitState) => {
         },
         setTodos: (todos: ToDoItem[]) => {
           set({ todos });
+        },
+        getTodo: (id: number) => {
+          return get().todos.find((todo) => todo.id === id);
         },
         removeTodo: (id: number) => {
           set((state) => ({
@@ -139,7 +144,7 @@ export const createToDoStore = (initState: ToDoState = defaultInitState) => {
                 : todo,
             ),
           })),
-        updateSettings: (settings: ToDoSettings) =>
+        updateSettings: (settings: Partial<ToDoSettings>) =>
           set((state) => ({
             ...state,
             settings: { ...state.settings, ...settings },

@@ -36,7 +36,7 @@ export const DueDateSetter: React.FC<DueDateSetterProps> = ({
         <Button
           variant={"outline"}
           className={cn(
-            "hover w-full justify-start border-none bg-black text-left font-normal text-background hover:bg-black/80",
+            "dark:bg-text bg-text hover:bg-text/80 w-full justify-start border-none text-left font-normal text-background hover:text-background",
             !date && "text-muted-foreground",
           )}
         >
@@ -46,6 +46,7 @@ export const DueDateSetter: React.FC<DueDateSetterProps> = ({
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="center">
         <Calendar
+          className="bg-background"
           classNames={{
             day: cn(
               buttonVariants({ variant: "ghost" }),
