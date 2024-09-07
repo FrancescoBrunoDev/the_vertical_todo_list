@@ -27,13 +27,11 @@ export const Main = () => {
       <div className="fixed bottom-2 z-50 md:bottom-auto md:top-40">
         <FilterSelector />
       </div>
-      <div className="container mt-32 flex w-full flex-col items-center gap-36 md:mt-60">
-        <div className="flex flex-col items-center justify-center gap-8">
-          <div className="z-20">
-            <NewTodo />
-          </div>
-          <ToDoList todos={fiteredTodos} />
+      <div className="flex flex-col items-center gap-8 pt-36 md:pt-60">
+        <div className="z-20">
+          <NewTodo />
         </div>
+        <ToDoList todos={fiteredTodos} />
       </div>
     </>
   );
