@@ -68,7 +68,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
 
   // add todo
   const handleAddTodo = () => {
-    if (edited.title.trim() && edited.content.trim()) {
+    if (edited.title && edited.content) {
       const newId = addTodo(edited.title, edited.content);
       if (edited.dueDate && newId) {
         setDueDate(newId, edited.dueDate);
