@@ -36,7 +36,7 @@ export const ActionDraggableAreas: React.FC<DroppableAreaProps> = ({
 
   return (
     <div
-      className={`fixed inset-0 bottom-16 top-64 flex items-center justify-center md:bottom-10`}
+      className={`fixed inset-0 bottom-16 top-60 flex items-center justify-center md:bottom-10`}
     >
       <div className="container relative h-full">
         {droppableAreas.map(({ title, id, additionalClasses }) => (
