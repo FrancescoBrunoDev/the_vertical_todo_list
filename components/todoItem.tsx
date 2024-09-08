@@ -81,7 +81,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   const dateLastChange = useMemo(
     () => (updatedAt?: Date, createdAt?: Date) => {
       const date = updatedAt || createdAt;
-      return date ? new Date(date).toLocaleString() : "";
+      return date ? date.toLocaleString() : "";
     },
     [],
   );
@@ -132,7 +132,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
                 ref={titleTextareaRef}
                 className={cn(
                   display.className,
-                  "focus-visible:ring-none placeholder:text-text/30 dark:placeholder:text-text/80 min-h-0 w-full max-w-full resize-none border-none p-0 text-xl font-bold uppercase tracking-wider shadow-none focus:outline-none focus:ring-0",
+                  "focus-visible:ring-none min-h-0 w-full max-w-full resize-none border-none p-0 text-xl font-bold uppercase tracking-wider shadow-none placeholder:text-text/30 focus:outline-none focus:ring-0 dark:placeholder:text-text/80",
                 )}
                 placeholder="Todo Title"
                 value={edited.title}
@@ -147,7 +147,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
           <CardContent className="p-0">
             <Textarea
               ref={contentTextareaRef}
-              className="focus-visible:ring-none placeholder:text-text/30 dark:placeholder:text-text/80 min-h-0 w-full max-w-full resize-none border-none p-0 text-sm font-normal shadow-none focus:outline-none focus:ring-0"
+              className="focus-visible:ring-none min-h-0 w-full max-w-full resize-none border-none p-0 text-sm font-normal shadow-none placeholder:text-text/30 focus:outline-none focus:ring-0 dark:placeholder:text-text/80"
               placeholder="Write your todo"
               value={edited.content}
               onChange={(e) =>
