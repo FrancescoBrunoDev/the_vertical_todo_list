@@ -60,9 +60,9 @@ export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
       };
 
       toggleTodo(todoId);
-      const completeState = todos.find((todo) => todo.id === todoId)?.completed;
+      const isTodoCompleted = todos.find((todo) => todo.id === todoId)?.completed;
 
-      if (!completeState) frame();
+      if (!isTodoCompleted) frame();
     }
   };
 
