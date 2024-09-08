@@ -52,7 +52,7 @@ export const ActionDraggableAreas: React.FC<DroppableAreaProps> = ({
                 )}
               >
                 <span
-                  className={cn({ "rotate-180": id === "delete" })}
+                  className={cn({ "rotate-180 pointer-events-none": id === "delete" })}
                   style={{ writingMode: "vertical-rl" }}
                 >
                   {title}
