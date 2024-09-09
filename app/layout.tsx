@@ -11,7 +11,7 @@ import { SelfHosted } from "@/components/selfhosted";
 export const metadata: Metadata = {
   title: "The Vertical Todo List",
   description:
-    "Organize your tasks with ease using our Vertical Todo List. Add, edit, and delete items, reorder them with drag-and-drop, filter by completion status, and manage due dates—all in one intuitive interface.",
+    "Organize your tasks with ease using The Vertical Todo List. Add, edit, and delete items, reorder them with drag-and-drop, filter by completion status, and manage due dates—all in one intuitive interface.",
 };
 
 export default function RootLayout({
