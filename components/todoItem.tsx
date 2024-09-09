@@ -78,19 +78,14 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   };
 
   // set due date
-  const dateLastChange = useMemo(
-    () => (updatedAt?: Date, createdAt?: Date) => {
-      const date = updatedAt || createdAt;
-      return date ? date.toLocaleString() : "";
-    },
-    [],
-  );
+  const dateLastChange = (updatedAt?: Date, createdAt?: Date) => {
+    const date = updatedAt || createdAt;
+    return date ? date.toLocaleString() : "";
+  };
 
   // determine if todo is overdue
-  const isOverdue = useMemo(() => {
-    if (!id || completed) return false;
-    return isAfter(new Date(), edited.dueDate);
-  }, [edited.dueDate, completed, id]);
+  const isOverdue =
+    !id || completed ? false : isAfter(new Date(), edited.dueDate);
 
   return (
     <motion.div

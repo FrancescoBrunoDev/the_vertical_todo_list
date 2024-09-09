@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { useToDoStore } from "@/provider/todo-store-provider";
 import { TodoItem } from "@/components/todoItem";
 import { ToDoList } from "@/components/todoList";
@@ -10,14 +11,16 @@ export const Main = () => {
   const { todos, settings } = useToDoStore((state) => state);
 
   // I wanted to use Object.groupBy, but it don't build on my server
-  const groupedTodos = todos.reduce((acc: { [key: string]: any[] }, todo) => {
-    const key = todo.completed ? "completed" : "notCompleted";
-    if (!acc[key]) {
-      acc[key] = [];
-    }
-    acc[key].push(todo);
-    return acc;
-  }, {});
+  const groupedTodos = useMemo(() => {
+    return todos.reduce((acc: { [key: string]: any[] }, todo) => {
+      const key = todo.completed ? "completed" : "notCompleted";
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(todo);
+      return acc;
+    }, {});
+  }, [todos]);
 
   const fiteredTodos =
     settings.filter === "all" ? todos : groupedTodos[settings.filter] || [];
