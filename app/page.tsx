@@ -10,7 +10,6 @@ import { addDays } from "date-fns";
 export default function Home() {
   const { todos, settings } = useToDoStore((state) => state);
 
-  // I wanted to use Object.groupBy, but it don't build on my server
   const groupedTodos = useMemo(() => {
     return todos.reduce((acc: { [key: string]: any[] }, todo) => {
       const key = todo.completed ? "completed" : "notCompleted";
