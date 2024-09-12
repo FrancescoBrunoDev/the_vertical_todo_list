@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { useToDoStore } from "@/provider/todo-store-provider";
-import { TodoItem } from "@/components/todoItem";
+import { TodoItem } from "@/components/todoItem/todoItem";
 import { ToDoList } from "@/components/todoList";
 import { FilterSelector } from "@/components/filterSelector";
 import { addDays } from "date-fns";

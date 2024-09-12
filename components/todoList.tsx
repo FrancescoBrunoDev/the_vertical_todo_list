@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TodoItem } from "@/components/todoItem";
+import { TodoItem } from "@/components/todoItem/todoItem";
 import type { ToDoItem } from "@/stores/todo-store";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { useToDoStore } from "@/provider/todo-store-provider";
