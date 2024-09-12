@@ -5,6 +5,7 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { useToDoStore } from "@/provider/todo-store-provider";
 import confetti from "canvas-confetti";
 import { ActionDraggableAreas } from "@/components/actionDraggableAreas";
+import { toast } from "sonner"
 
 type ToDoListProps = {
   todos: ToDoItem[];
@@ -40,7 +41,15 @@ export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
     //handle moving itmes in different zones
     if (destinationId === "delete") {
       removeTodo(todoId);
+      toast.error("Todo has been deleted.", {
+        style: {
+          background: 'hsl(var(--secondary))',
+          color: 'hsl(var(--text))',
+          border: 'none',
+        },
+      });
     } else if (destinationId === "completed") {
+      // prepare the confetti animation
       const endConfetti = Date.now() + 1 * 300;
       const colors = ["#a786ff", "#fd8bbc", "#eca184", "#f8deb1"];
 
@@ -59,10 +68,26 @@ export const ToDoList: React.FC<ToDoListProps> = ({ todos }) => {
         requestAnimationFrame(frame);
       };
 
+      // perform the toggle
       toggleTodo(todoId);
+      // determine if the todo is completed
       const isTodoCompleted = todos.find((todo) => todo.id === todoId)?.completed;
 
+      // make the animation if not completed
       if (!isTodoCompleted) frame();
+
+      // show the toast
+      const toastMessage = isTodoCompleted
+        ? "Todo has been marked as not done."
+        : "Todo has been marked as done.";
+
+      toast(toastMessage, {
+        style: {
+          background: 'hsl(var(--primary))',
+          color: 'hsl(var(--text))',
+          border: 'none',
+        },
+      });
     }
   };
 

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useToDoStore } from "@/provider/todo-store-provider";
 import { isAfter } from "date-fns";
 import { ToDoItem } from "@/stores/todo-store";
+import { toast } from "sonner"
 
 type UseTodoItemLogicProps = Partial<ToDoItem>;
 
@@ -35,6 +36,13 @@ export const useTodoItemLogic = ({
                 setDueDate(newId, edited.dueDate);
             }
             setEditedTodo({ title: "", content: "", dueDate: new Date() });
+            toast.success("Todo has been created.", {
+                style: {
+                    background: 'hsl(var(--card))',
+                    color: 'hsl(var(--text))',
+                    border: 'none'
+                },
+            });
         }
     };
 
