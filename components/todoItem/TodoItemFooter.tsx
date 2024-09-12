@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Info, Plus } from "lucide-react";
 import { motion } from "framer-motion";
-import { DueDateSetter } from "@/components/dueDateSetter";
+import { DueDateSetter } from "@/components/todoItem/dueDateSetter";
 
 type TodoItemFooterProps = {
     id?: number;
