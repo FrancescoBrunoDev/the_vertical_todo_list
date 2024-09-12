@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { TodoItemHeader } from "@/components/todoItem/TodoItemoHeader";
-import { TodoItemContent } from "@/components/todoItem/TodoItemContent";
-import { TodoItemFooter } from "@/components/todoItem/TodoItemFooter";
+import { TodoItemHeader } from "@/components/todoItem/todoItemoHeader";
+import { TodoItemContent } from "@/components/todoItem/todoItemContent";
+import { TodoItemFooter } from "@/components/todoItem/todoItemFooter";
 import { useTodoItemLogic } from "@/hooks/useTodoItemLogic";
 import { ToDoItem } from "@/stores/todo-store";
 
