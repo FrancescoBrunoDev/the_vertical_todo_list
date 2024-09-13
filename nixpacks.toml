@@ -1,0 +1,7 @@
+[phases]
+setup = "curl -fsSL https://bun.sh/install | bash"
+install = "bun install"
+start = "bun start"
+
+[environment]
+PATH = "$HOME/.bun/bin:$PATH"
