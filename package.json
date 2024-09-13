@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "bun run next dev",
+    "build": "bun run next build",
+    "start": "bun run next start",
+    "lint": "bun run next lint"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^16.6.0",
@@ -52,5 +52,8 @@
     "plugins": [
       "prettier-plugin-tailwindcss"
     ]
-  }
+  },
+  "trustedDependencies": [
+    "canvas-confetti"
+  ]
 }

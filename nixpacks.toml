@@ -1,7 +1,11 @@
-[phases]
-setup = "curl -fsSL https://bun.sh/install | bash"
-install = "bun install"
-start = "bun start"
+[phases.setup]
+nixPkgs = ["bun"]
 
-[environment]
-PATH = "$HOME/.bun/bin:$PATH"
+[phases.install]
+cmds = ["bun install"]
+
+[phases.build]
+cmds = ["bun run build"]
+
+[start]
+cmd = "bun run start"
